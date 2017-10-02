@@ -5,12 +5,12 @@ module KonturFocus
     end
 
     def to_s
-      <<-eos
-Произошла ошибка при интеграции c Контур.Фокус
-- Status: #{@response.status}
-- Body: #{@response.body}
-- URL: #{@response.uri}
-eos
+      <<~eos
+        Произошла ошибка при интеграции c Контур.Фокус
+        - Status: #{@response.status}
+        - Body: #{@response.body}
+        - URL: #{@response.uri}
+      eos
     end
   end
 

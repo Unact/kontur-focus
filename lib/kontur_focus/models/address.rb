@@ -1,7 +1,7 @@
 module KonturFocus::Models
   class Address
     ADDRESS_PARTS = ["regionName", "district", "city", "settlement", "street", "house", "bulk", "flat"]
-    SEPORATOR = ", "
+    SEPARATOR = ", "
 
     def initialize hash
       @address_parts = ADDRESS_PARTS.map do |topo_type|
@@ -10,11 +10,11 @@ module KonturFocus::Models
     end
 
     def full_name
-      @address_parts.map{|address_part| address_part.full_name}.join(SEPORATOR)
+      @address_parts.map{|address_part| address_part.full_name}.join(SEPARATOR)
     end
 
     def short_name
-      @address_parts.map{|address_part| address_part.short_name}.join(SEPORATOR)
+      @address_parts.map{|address_part| address_part.short_name}.join(SEPARATOR)
     end
 
     class AddressPart
