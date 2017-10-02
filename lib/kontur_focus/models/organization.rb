@@ -19,9 +19,9 @@ module KonturFocus::Models
     end
 
     def self.produce hash
-      if hash.has_key? "IP" then
+      if hash.has_key? "IP"
         Ip.new(hash)
-      elsif hash.has_key? "UL" then
+      elsif hash.has_key? "UL"
         Ul.new(hash)
       else
         raise "Тип организации не определен"

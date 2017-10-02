@@ -1,7 +1,7 @@
 # https://focus-api.kontur.ru/api3/index.html
 module KonturFocus
   class Api3
-    SEPORATOR = ','
+    SEPARATOR = ','
     API_URL = "https://focus-api.kontur.ru"
     API_VERSION = "api3"
     API_SHORT_VERSION = "3"
@@ -32,11 +32,11 @@ module KonturFocus
     # Метод возвращает подмножество (ИНН или ОГРН), состоящее из элементов параметра, которых нет в Контуре
     def mon_list inn_or_inns_or_ogrn_or_ogrns
       monitoring = [*inn_or_inns_or_ogrn_or_ogrns]
-      responce = send_request do |params|
-        HTTP.post(build_url("monList"), params: params, body: monitoring.join(SEPORATOR))
+      response = send_request do |params|
+        HTTP.post(build_url("monList"), params: params, body: monitoring.join(SEPARATOR))
       end
 
-      Utils.diff(monitoring, responce)
+      Utils.diff(monitoring, response)
     end
 
     private
@@ -45,9 +45,9 @@ module KonturFocus
       end
 
       def send_request params={}
-        responce = yield(apply_default_params params)
-        resolve_api_error responce unless responce.code == 200
-        parse_response responce
+        response = yield(apply_default_params params)
+        resolve_api_error response unless response.code == 200
+        parse_response response
       end
 
       def req_inns inn_or_inns
@@ -69,22 +69,22 @@ module KonturFocus
       # Что неожиданно. Эту ошибку не будем выбрасывать наружу, а обратоем, как пустой массив
       def req_generic param_name, param_value_or_values
         param_values = [*param_value_or_values]
-        if param_values.length > 0
 
-          # Простая проверка, что ИНН/ОГРН - это вообще-то числа.
-          # Но преобразовывать в числа не будем, т.к. могут встретиться ведущие нули (если могут, конечно).
-          incorrect_value = param_values.find{|value| /\D/ =~ value.to_s}
-          raise "Введен неверный параметр #{incorrect_value}" if incorrect_value
+        return unless param_values.length > 0
 
-          param_values.each_slice(MAX_INN_OR_ORGN).reduce([]) do |memo, values|
-            begin
-              memo + send_request do |params|
-                params[param_name] = values.join(SEPORATOR)
-                HTTP.get(build_url("req"), params: params)
-              end
-            rescue InnOrgnParamIsNotSpecifiedError
-              memo
+        # Простая проверка, что ИНН/ОГРН - это вообще-то числа.
+        # Но преобразовывать в числа не будем, т.к. могут встретиться ведущие нули (если могут, конечно).
+        incorrect_value = param_values.find{|value| /\D/ =~ value.to_s}
+        raise "Введен неверный параметр #{incorrect_value}" if incorrect_value
+
+        param_values.each_slice(MAX_INN_OR_ORGN).reduce([]) do |memo, values|
+          begin
+            memo + send_request do |params|
+              params[param_name] = values.join(SEPARATOR)
+              HTTP.get(build_url("req"), params: params)
             end
+          rescue InnOrgnParamIsNotSpecifiedError
+            memo
           end
         end
       end
@@ -93,12 +93,12 @@ module KonturFocus
         {key: KonturFocus.config.key}.merge params
       end
 
-      def parse_response responce
-        responce.parse # Работает только если Content-type - application/json. Нас это устраивает
+      def parse_response response
+        response.parse # Работает только если Content-type - application/json. Нас это устраивает
       end
 
-      def resolve_api_error responce
-        ErrorFabric.produce responce
+      def resolve_api_error response
+        ErrorFabric.produce response
       end
   end
 end

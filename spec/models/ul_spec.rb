@@ -2,8 +2,7 @@ require "spec_helper"
 
 RSpec.describe KonturFocus::Models::Ul do
   it 'organization correct produce ul' do
-    hash = JSON.parse(File.read 'spec/data/6663003127.json').first
-    ul = KonturFocus::Models::Organization.produce(hash)
+    ul = KonturFocus::Models::Organization.produce(read_data("6663003127.json"))
 
     expect(ul.ip?).to be false
     expect(ul.ul?).to be true

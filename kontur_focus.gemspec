@@ -7,8 +7,6 @@ Gem::Specification.new do |spec|
   spec.name          = "kontur-focus"
   spec.version       = KonturFocus::VERSION
   spec.authors       = ["unact"]
-  spec.email         = ["kurtov@unact.ru"]
-
   spec.summary       = "Kontur.Focus integration"
   spec.description   = "Kontur.Focus integration"
   spec.homepage      = "https://github.com/Unact/kontur-focus"

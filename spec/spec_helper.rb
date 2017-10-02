@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "kontur_focus"
 require "webmock/rspec"
+require "support/data_helper"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,4 +13,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.include KonturFocus::DataHelper
 end
