@@ -1,0 +1,29 @@
+[
+  {
+    "inn":"561100409545",
+    "ogrn":"309565808600188",
+    "focusHref":"https:\/\/focus.kontur.ru\/entity?query=309565808600188",
+    "IP":{
+      "fio":"Иванов Иван Иванович",
+      "okpo":"0164667059",
+      "okato":"53401364000",
+      "okfs":"16",
+      "okogu":"4210015",
+      "okopf":"50102",
+      "opf":"Индивидуальные предприниматели",
+      "oktmo":"53701000001",
+      "registrationDate":"2009-03-27",
+      "status":{
+        "statusString":"Действующее"
+      }
+    },
+    "briefReport":{
+      "summary":{
+
+      }
+    },
+    "contactPhones":{
+
+    }
+  }
+]
