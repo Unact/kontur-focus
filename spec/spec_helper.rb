@@ -1,7 +1,7 @@
 require "bundler/setup"
 require "kontur_focus"
 require "webmock/rspec"
-require "data_helper"
+require "support/data_helper"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
