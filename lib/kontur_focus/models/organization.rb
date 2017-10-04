@@ -19,7 +19,7 @@ module KonturFocus::Models
     end
 
     def to_xml options={}
-      options = {root: :req, :skip_types=>true}.merge options
+      options = {root: :req, skip_types: true}.merge options
       @hash.to_xml options
     end
 
