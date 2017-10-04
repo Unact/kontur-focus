@@ -5,6 +5,8 @@ require "kontur_focus/error"
 require "kontur_focus/utils"
 require "kontur_focus/models"
 require "http"
+require "active_support"
+require "active_support/core_ext"
 
 module KonturFocus
   def self.configure

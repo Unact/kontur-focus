@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   # Не получается использовать 3-ю версию гема ("~> 3.0.0.pre")
   # из-за баги при тестировании post запроса
   spec.add_dependency "http", "~> 2"
+  spec.add_dependency "activesupport", "~> 5.1.2"
+  spec.add_dependency "builder", "~> 3.2.3"
 
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "rake", "~> 10.0"

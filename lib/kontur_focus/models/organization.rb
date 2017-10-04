@@ -18,6 +18,11 @@ module KonturFocus::Models
       @hash.to_json
     end
 
+    def to_xml options={}
+      options = {root: :req, :skip_types=>true}.merge options
+      @hash.to_xml options
+    end
+
     def self.produce hash
       if hash.has_key? "IP"
         Ip.new(hash)

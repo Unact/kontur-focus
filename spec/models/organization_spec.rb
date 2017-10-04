@@ -11,5 +11,8 @@ RSpec.describe KonturFocus::Models::Organization do
     expect(org.brief_report).to eq({"summary" => {"greenStatements" => true}})
     expect(org.contact_phones).to eq({"count" => 47})
     expect(JSON.parse(org.to_json)).to eq(hash)
+
+    # Оставим инфу о типах данных, что бы при конверте из xml в hash числа конвертились в числа, а не в строки
+    expect(Hash.from_xml(org.to_xml skip_types: false)["req"]).to eq(hash)
   end
 end
