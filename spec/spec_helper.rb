@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "kontur_focus"
+require "kontur-focus"
 require "webmock/rspec"
 require "support/data_helper"
 
