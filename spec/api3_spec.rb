@@ -173,5 +173,17 @@ RSpec.describe KonturFocus::Api3 do
       })
 
     expect{KonturFocus.api.req(['6663003127'])}.to raise_error(KonturFocus::NoValidKeySpecifiedError)
+
+    begin
+      KonturFocus.api.req(['6663003127'])
+    rescue KonturFocus::NoValidKeySpecifiedError => e
+      expect(e.message).to eq(<<~eos
+        Произошла ошибка при интеграции c Контур.Фокус
+        - Status: 403 Forbidden
+        - Body: No valid key specified
+        - URL: https://focus-api.kontur.ru/api3/req?inn=6663003127&key=
+      eos
+      )
+    end
   end
 end

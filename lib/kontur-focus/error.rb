@@ -1,5 +1,11 @@
+# Ошибки, полученные от Контура, наследуются от KonturFocus::Error
+# В остальных случаях выбрасываются RuntimeError
 module KonturFocus
-  class Error < StandardError
+  class Error < ::StandardError
+    extend Forwardable
+
+    def_delegators :@response, :status, :body, :uri
+
     def initialize response
       @response = response
     end
@@ -7,9 +13,9 @@ module KonturFocus
     def to_s
       <<~eos
         Произошла ошибка при интеграции c Контур.Фокус
-        - Status: #{@response.status}
-        - Body: #{@response.body}
-        - URL: #{@response.uri}
+        - Status: #{status}
+        - Body: #{body}
+        - URL: #{uri}
       eos
     end
   end
