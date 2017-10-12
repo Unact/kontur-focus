@@ -5,7 +5,7 @@ module KonturFocus::Models
 
     def initialize hash
       @address_parts = ADDRESS_PARTS.map do |topo_type|
-        AddressPart.new(topo_type, hash[topo_type]) if hash&.has_key? topo_type
+        AddressPart.produce(topo_type, hash[topo_type]) if hash&.has_key? topo_type
       end.compact
     end
 
@@ -21,36 +21,75 @@ module KonturFocus::Models
       REVERSE_PARTS = ["regionName", "district"]
       DIRECT_PARTS = Address::ADDRESS_PARTS - REVERSE_PARTS
 
+      class << self
+        protected :new
+
+        def produce topo_type, hash
+          case topo_type
+            when "regionName" then Region.new topo_type, hash
+            when "flat" then Flat.new topo_type, hash
+            else self.new topo_type, hash
+          end
+        end
+      end
+
       def initialize topo_type, hash
         @topo_type = topo_type
         @topo_full_name = hash["topoFullName"]
         @topo_short_name = hash["topoShortName"]
         @topo_value = hash["topoValue"]
-      end
 
-      def full_name
-        send "#{self.class.direction @topo_type}_full_name"
-      end
-
-      def short_name
-        send "#{self.class.direction @topo_type}_short_name"
-      end
-
-      def self.direction topo_type
-        if REVERSE_PARTS.include? topo_type
-          :reverse
-        elsif DIRECT_PARTS.include? topo_type
-          :direct
-        else
-          raise "Неподдерживаемый аргумент"
+        if (@topo_short_name != @topo_full_name) && !@topo_short_name.include?('-')
+          @topo_short_name = "#{@topo_short_name}."
         end
       end
 
+      def full_name
+        send "#{direction}_full_name"
+      end
+
+      def short_name
+        send "#{direction}_short_name"
+      end
+
       private
+        def direction
+          if REVERSE_PARTS.include? @topo_type
+            :reverse
+          elsif DIRECT_PARTS.include? @topo_type
+            :direct
+          else
+            raise "Неподдерживаемый аргумент"
+          end
+        end
+
         def direct_full_name;   "#{@topo_full_name} #{@topo_value}";  end
         def direct_short_name;  "#{@topo_short_name} #{@topo_value}"; end
         def reverse_full_name;  "#{@topo_value} #{@topo_full_name}";  end
         def reverse_short_name; "#{@topo_value} #{@topo_short_name}"; end
+    end
+
+    class Region < AddressPart
+      private
+        def direction
+          if @topo_full_name == 'город'
+            :direct
+          else
+            super
+          end
+        end
+    end
+
+    class Flat < AddressPart
+      def initialize topo_type, hash
+        hash_dup = hash.dup
+        if hash["topoFullName"].nil? && hash["topoShortName"].nil?
+          hash_dup["topoFullName"] = "квартира"
+          hash_dup["topoShortName"] = "кв"
+        end
+
+        super topo_type, hash_dup
+      end
     end
   end
 end
