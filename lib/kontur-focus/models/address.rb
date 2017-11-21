@@ -1,6 +1,6 @@
 module KonturFocus::Models
   class Address
-    ADDRESS_PARTS = ["regionName", "district", "city", "settlement", "street", "house", "bulk", "flat"]
+    ADDRESS_PARTS = ["zipCode", "regionName", "district", "city", "settlement", "street", "house", "bulk", "flat"]
     SEPARATOR = ", "
 
     def initialize hash
@@ -28,6 +28,7 @@ module KonturFocus::Models
           case topo_type
             when "regionName" then Region.new topo_type, hash
             when "flat" then Flat.new topo_type, hash
+            when "zipCode" then ZipCode.new topo_type, hash
             else self.new topo_type, hash
           end
         end
@@ -67,6 +68,13 @@ module KonturFocus::Models
         def direct_short_name;  "#{@topo_short_name} #{@topo_value}"; end
         def reverse_full_name;  "#{@topo_value} #{@topo_full_name}";  end
         def reverse_short_name; "#{@topo_value} #{@topo_short_name}"; end
+    end
+
+    class ZipCode < AddressPart
+      def initialize _, value; @value = value; end
+
+      def full_name;  @value; end
+      def short_name; @value; end
     end
 
     class Region < AddressPart
