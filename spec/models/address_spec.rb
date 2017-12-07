@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe KonturFocus::Models::Address do
   it "returns correct name" do
     hash = {
+      "zipCode" => "620017",
       "regionName" => {
         "topoShortName" => "обл",
         "topoFullName" => "область",
@@ -31,12 +32,12 @@ RSpec.describe KonturFocus::Models::Address do
     }
 
     address = KonturFocus::Models::Address.new(hash)
-    expect(address.full_name).to eq("Свердловская область, город Екатеринбург, проспект Космонавтов, дом 56, офис 17")
+    expect(address.full_name).to eq("620017, Свердловская область, город Екатеринбург, проспект Космонавтов, дом 56, офис 17")
 
     # Обратить внимание на отсутствие точек после двух видов сокращений:
     # пр-кт - в названии есть дефис
     # дом - не сокарщение
-    expect(address.short_name).to eq("Свердловская обл., г. Екатеринбург, пр-кт Космонавтов, дом 56, оф. 17")
+    expect(address.short_name).to eq("620017, Свердловская обл., г. Екатеринбург, пр-кт Космонавтов, дом 56, оф. 17")
   end
 
   it "correct work if empty initializer" do
