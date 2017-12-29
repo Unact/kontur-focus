@@ -40,7 +40,7 @@ module KonturFocus::Models
         @topo_short_name = hash["topoShortName"]
         @topo_value = hash["topoValue"]
 
-        if (@topo_short_name != @topo_full_name) && !@topo_short_name.include?('-')
+        if @topo_short_name && (@topo_short_name != @topo_full_name) && !@topo_short_name.include?('-')
           @topo_short_name = "#{@topo_short_name}."
         end
       end
@@ -64,10 +64,10 @@ module KonturFocus::Models
           end
         end
 
-        def direct_full_name;   "#{@topo_full_name} #{@topo_value}";  end
-        def direct_short_name;  "#{@topo_short_name} #{@topo_value}"; end
-        def reverse_full_name;  "#{@topo_value} #{@topo_full_name}";  end
-        def reverse_short_name; "#{@topo_value} #{@topo_short_name}"; end
+        def direct_full_name;   "#{@topo_full_name} #{@topo_value}".strip;  end
+        def direct_short_name;  "#{@topo_short_name} #{@topo_value}".strip; end
+        def reverse_full_name;  "#{@topo_value} #{@topo_full_name}".strip;  end
+        def reverse_short_name; "#{@topo_value} #{@topo_short_name}".strip; end
     end
 
     class ZipCode < AddressPart
@@ -91,7 +91,7 @@ module KonturFocus::Models
     class Flat < AddressPart
       def initialize topo_type, hash
         hash_dup = hash.dup
-        if hash["topoFullName"].nil? && hash["topoShortName"].nil?
+        if hash["topoFullName"].nil? && hash["topoShortName"].nil? && /^\d+$/ =~ hash["topoValue"]
           hash_dup["topoFullName"] = "квартира"
           hash_dup["topoShortName"] = "кв"
         end
