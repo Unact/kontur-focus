@@ -31,7 +31,7 @@ RSpec.describe KonturFocus::Models::Address do
       }
     }
 
-    address = KonturFocus::Models::Address.new(hash)
+    address = described_class.new(hash)
     expect(address.full_name).to eq("620017, Свердловская область, город Екатеринбург, проспект Космонавтов, дом 56, офис 17")
 
     # Обратить внимание на отсутствие точек после двух видов сокращений:
@@ -41,9 +41,9 @@ RSpec.describe KonturFocus::Models::Address do
   end
 
   it "correct work if empty initializer" do
-    address = KonturFocus::Models::Address.new(nil)
+    address = described_class.new(nil)
     expect(address.full_name).to eq("")
-    address = KonturFocus::Models::Address.new({})
+    address = described_class.new({})
     expect(address.full_name).to eq("")
   end
 
@@ -56,25 +56,63 @@ RSpec.describe KonturFocus::Models::Address do
       }
     }
 
-    address = KonturFocus::Models::Address.new(hash)
+    address = described_class.new(hash)
     expect(address.full_name).to eq("город Москва")
     expect(address.short_name).to eq("г. Москва")
   end
 
-  it "returns name with correct flat" do
-    hash = {
-      "house" => {
-        "topoShortName" => "дом",
-        "topoFullName" => "дом",
-        "topoValue" => "26"
-      },
-      "flat" => {
-        "topoValue" => "17"
+  context "flat" do
+    it "returns name with correct flat if topoType isn't specified and topoValue is int" do
+      hash = {
+        "house" => {
+          "topoShortName" => "дом",
+          "topoFullName" => "дом",
+          "topoValue" => "26"
+        },
+        "flat" => {
+          "topoValue" => "17"
+        }
       }
-    }
 
-    address = KonturFocus::Models::Address.new(hash)
-    expect(address.full_name).to eq("дом 26, квартира 17")
-    expect(address.short_name).to eq("дом 26, кв. 17")
+      address = described_class.new(hash)
+      expect(address.full_name).to eq("дом 26, квартира 17")
+      expect(address.short_name).to eq("дом 26, кв. 17")
+    end
+
+    it "returns name with correct flat if topoType isn't specified and topoValue isn't int" do
+      hash = {
+        "house" => {
+          "topoShortName" => "дом",
+          "topoFullName" => "дом",
+          "topoValue" => "26"
+        },
+        "flat" => {
+          "topoValue" => "ЭТАЖ 2 КОМНАТА 109"
+        }
+      }
+
+      address = described_class.new(hash)
+      expect(address.full_name).to eq("дом 26, ЭТАЖ 2 КОМНАТА 109")
+      expect(address.short_name).to eq("дом 26, ЭТАЖ 2 КОМНАТА 109")
+    end
+
+    it "returns name with correct flat if topoType is specified" do
+      hash = {
+        "house" => {
+          "topoShortName" => "дом",
+          "topoFullName" => "дом",
+          "topoValue" => "26"
+        },
+        "flat" => {
+          "topoShortName" => "оф",
+          "topoFullName" => "офис",
+          "topoValue" => "17"
+        }
+      }
+
+      address = described_class.new(hash)
+      expect(address.full_name).to eq("дом 26, офис 17")
+      expect(address.short_name).to eq("дом 26, оф. 17")
+    end
   end
 end
