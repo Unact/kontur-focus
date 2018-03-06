@@ -20,9 +20,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Не получается использовать 3-ю версию гема ("~> 3.0.0.pre")
-  # из-за баги при тестировании post запроса
-  spec.add_dependency "http", "~> 2"
+  spec.add_dependency "http", ">= 2"
   spec.add_dependency "activesupport", "~> 5.1.2"
   spec.add_dependency "builder", "~> 3.2.3"
 
