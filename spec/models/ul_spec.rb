@@ -8,6 +8,8 @@ RSpec.describe KonturFocus::Models::Ul do
     expect(ul.ul?).to be true
 
     expect(ul.kpp).to eq "668601001"
+    expect(ul.registration_date).to eq "1992-03-26"
+    expect(ul.dissolution_date).to eq "2018-01-01"
     expect(ul.full_address).to eq "620017, Свердловская область, город Екатеринбург, проспект Космонавтов, дом 56"
     expect(ul.short_address).to eq "620017, Свердловская обл., г. Екатеринбург, пр-кт Космонавтов, дом 56"
   end

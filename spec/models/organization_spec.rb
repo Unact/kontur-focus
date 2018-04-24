@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe KonturFocus::Models::Organization do
-  it 'correct parce hash to object' do
+  it 'correct parse hash to object' do
     hash = JSON.parse(File.read 'spec/data/6663003127.json').first
     org = KonturFocus::Models::Organization.produce(hash)
 

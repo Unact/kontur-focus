@@ -6,5 +6,7 @@ RSpec.describe KonturFocus::Models::Ip do
 
     expect(ip.ip?).to be true
     expect(ip.ul?).to be false
+    expect(ip.registration_date).to eq "2009-03-27"
+    expect(ip.dissolution_date).to eq "2018-01-02"
   end
 end

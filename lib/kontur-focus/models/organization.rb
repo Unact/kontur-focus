@@ -1,6 +1,6 @@
 module KonturFocus::Models
   class Organization
-    attr_reader :inn, :ogrn, :focus_href, :brief_report, :contact_phones
+    attr_reader :inn, :ogrn, :focus_href, :brief_report, :contact_phones, :dissolution_date, :registration_date
 
     class << self
       protected :new
@@ -22,6 +22,8 @@ module KonturFocus::Models
       @focus_href = hash["focusHref"]
       @brief_report = hash["briefReport"]
       @contact_phones = hash["contactPhones"]
+      @registration_date = nil
+      @dissolution_date = nil
       @hash = hash
     end
 

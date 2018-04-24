@@ -6,6 +6,8 @@ module KonturFocus::Models
       super hash
 
       @kpp = hash["UL"]["kpp"]
+      @registration_date = hash["UL"]["registrationDate"]
+      @dissolution_date = hash["UL"]["dissolutionDate"]
       @address = Address.new(hash["UL"]["legalAddress"]["parsedAddressRF"])
     end
 
